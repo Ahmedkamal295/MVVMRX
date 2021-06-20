@@ -15,7 +15,6 @@ class LoginVC: UIViewController {
     @IBOutlet weak var phoneTF: UITextField!
     @IBOutlet weak var passwordTF: UITextField!
     @IBOutlet weak var loginButton: UIButton!
-    
     //MARK:- empty array
     let loginViewModel = LoginViewModel()
     let disposeBag = DisposeBag()
@@ -27,7 +26,6 @@ class LoginVC: UIViewController {
         subscribeToCheckInternet()
         checkErrorModel()
         subscribeToSuccess()
-      
     }
     //MARK:- bind function
     func bindTextFieldsToViewModel() {
@@ -37,7 +35,6 @@ class LoginVC: UIViewController {
     //MARK:- loading data
     func subscribToLoading() {
         loginViewModel.loadingBehavior.subscribe(onNext: {(isLoading) in
-            
             if isLoading {
                 self.showIndicator()
             } else {
@@ -63,9 +60,8 @@ class LoginVC: UIViewController {
     func subscribeToSuccess() {
         loginViewModel.loginSuccessModel.subscribe(onNext: {
             if $0.status == true {
-                self.goVC(viewController: HomeVC.self, storyboard: "Home")
+                self.goVC(vc: HomeVC.self, storyboard: "Home")
                 self.createSkipAlert(alertTite: "\($0.status!)", alertMessage: "Success Login")
-               
             } else {
                 self.createSkipAlert(alertTite: "\($0.status!)", alertMessage: "Wrong")
             }
@@ -79,7 +75,6 @@ class LoginVC: UIViewController {
                 return false
             }
             return true
-               
             }).subscribe(onNext: { [weak self](_) in
                 guard let self = self else { return }
                 self.loginButton.rx.backgroundColor.onNext(.black)

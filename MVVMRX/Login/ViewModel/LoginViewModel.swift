@@ -34,7 +34,7 @@ class LoginViewModel {
             "email": phoneBehavior.value,
             "password": passwordBehavior.value
         ]
-        ApiServices.instance.FetchData(url: .login, methodType: .post, parameters: param as [String : AnyObject]) { [weak self]
+        ApiServices.instance.FetchData(url: "https://najlaboutique.qa/api/login", methodType: .post, parameters: param as [String : AnyObject]) { [weak self]
             (loginModel: LoginSuccessModel?, dataError: LoginErrorModel?, error) in
        
             guard let self = self else { return }

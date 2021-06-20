@@ -11,9 +11,9 @@ var window: UIWindow?
 extension UIViewController {
    
     //MARK:- push viewController Using
-    func goVC<viewController: UIViewController>(viewController: viewController.Type ,storyboard : String){
+    func goVC<viewController: UIViewController>(vc: viewController.Type ,storyboard : String){
         
-    let storyboard = UIStoryboard(name: storyboard, bundle: nil)
+        let storyboard = UIStoryboard(name: storyboard, bundle: nil)
         let vc  = storyboard.instantiateViewController(withIdentifier: String(describing: viewController.self))
         navigationController?.pushViewController(vc, animated: true)
 

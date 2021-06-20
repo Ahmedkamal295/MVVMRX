@@ -54,9 +54,8 @@ class HomeViewModel {
    // MARK:- function cell api services
      func fetchData() {
          loadingBehavior.accept(true)
-        ApiServices.instance.FetchData(url: .home, methodType: .get, parameters: nil) { [weak self]
-            (HomeModel: HomeSucccessModel?, dataError: HomeErrorModel?, error) in
-       
+        ApiServices.instance.FetchData(url: "https://najlaboutique.qa/api/home/hot_offers", methodType: .get, parameters: nil)
+        { [weak self](HomeModel: HomeSucccessModel?, dataError: HomeErrorModel?, error) in
             guard let self = self else { return }
             self.loadingBehavior.accept(false)
             if let error = error {

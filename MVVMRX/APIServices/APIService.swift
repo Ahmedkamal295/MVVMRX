@@ -15,9 +15,9 @@ class ApiServices {
     private init() {}
     static let instance = ApiServices()
   
-    func FetchData<T: Codable, E: Codable>(url: WebService, methodType: HTTPMethod?, parameters: [String: AnyObject]? = nil, completion: @escaping (T?, E?, Error?) -> Void) {
+    func FetchData<T: Codable, E: Codable>(url: String, methodType: HTTPMethod?, parameters: [String: AnyObject]? = nil, completion: @escaping (T?, E?, Error?) -> Void) {
 
-        guard let url = URL(string: url.urlLink) else { return }
+     
     
         //MARK:-  Language
         if MOLHLanguage.currentAppleLanguage() == "ar" {
@@ -44,7 +44,7 @@ class ApiServices {
                 "lang": self.lang,
             ]
         }
-        
+        guard let url = URL(string: url) else { return }
         AF.request(url, method: methodType ?? .post, parameters: parameters, encoding: JSONEncoding.default, headers: headers)
             .validate(statusCode: 200 ..< 300)
             .responseJSON { (response) in

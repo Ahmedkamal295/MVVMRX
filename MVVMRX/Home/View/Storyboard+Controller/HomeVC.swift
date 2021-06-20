@@ -29,7 +29,6 @@ class HomeVC: UIViewController {
         subscribeToBranchSelection()
         subscribeChangeLanguage()
         logout()
-     
     }
     //MARK:-  registerCells funcrion
     func registerCells() {
@@ -47,20 +46,23 @@ class HomeVC: UIViewController {
     }
     //MARK:-  subscribeToResponse data
     func subscribeToResponse() {
-        homeViewModel.homeModelObservable.bind(to: tableView.rx.items(cellIdentifier: String(describing: CellHome.self), cellType: CellHome.self)) { index, model, cell in
+        homeViewModel.homeModelObservable.bind(to: tableView.rx.items(cellIdentifier: String(describing: CellHome.self), cellType: CellHome.self)) { indexPath, model, cell in
             
             cell.nameProduct.text = model.name
             cell.priceProduct.text = model.price
             let imageUrl = model.main_image?.image_url
             cell.imgProduct.loadImage(URL(string: imageUrl ?? ""))
-           }.disposed(by: disposeBag)
+        }.disposed(by: disposeBag)
     }
     //MARK:-  subscribeTo Selection item function
     func subscribeToBranchSelection() {
         Observable.zip(tableView.rx.itemSelected, tableView.rx.modelSelected(HomeSucccessData.self))
-               .bind { selectedIndex, model in
-                self.goVC(viewController: LoginVC.self, storyboard: "Login")
-                print(selectedIndex, model.name ?? "")
+            .bind { indexPath, model in
+                
+                let storyboard = UIStoryboard(name: "ItemsDetails", bundle: nil)
+                let vc  = storyboard.instantiateViewController(withIdentifier: "ItemsDetailsVC") as! ItemsDetailsVC
+                vc.id = "\(model.id ?? 0)"
+                self.navigationController?.pushViewController(vc, animated: true)
             }
             .disposed(by: disposeBag)
     }
@@ -84,7 +86,7 @@ class HomeVC: UIViewController {
         logoutButton.rx.tap.throttle(RxTimeInterval.milliseconds(500), scheduler: MainScheduler.instance).subscribe(onNext: { [weak self](_) in
             guard let self = self else { return }
             self.homeViewModel.logoutApp()
-            self.goVC(viewController: LoginVC.self, storyboard: "Login")
+            self.goVC(vc: LoginVC.self, storyboard: "Login")
         }).disposed(by: disposeBag)
     }
 }
